@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chat</title>
+		<meta charset="utf-8"/>	
+		<style type="text/css">		
+			body {
+				background-color: #222;			
+			}	
+					
+			div {
+				color: white;			
+			}			
+			
+			#texte {
+				width: 518px;
+				height: 500px;
+				border: solid white 1px;
+				overflow-y: scroll;
+				word-wrap: break-word;
+			}
+
+			#msg {
+				max-width: 500px;
+				min-width: 500px;
+			}
+			
+			.perso {
+				color: blue;
+			}
+	
+			.sys {
+				color:red;
+				font-weight: bold;
+			}
+		</style>
+	</head>	
+
+	<body>
+		
+		<div id="login">
+			<form id="login_form">			
+				Login : <input type="text" id="username"/>					
+			</form>
+		</div>	
+	
+		<div id="chat">
+			<div id="texte"></div>
+			<form id="form">
+				<input id="msg" type="text"/>	
+			</form>
+		</div>		
+	
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+      <script>
+			$(function(){
+				$('#chat').hide();
+				$('#login_form').submit(function (e) {
+					e.preventDefault();
+					var username = $('#username').val();
+					if(username === '') return;					
+					
+					$('#login').fadeOut();
+					$('#chat').fadeIn();					
+					
+					var socket = io.connect('http://192.168.0.19:8080');    	
+					socket.emit('connected', {uname: username});				
+				
+					$("#form").submit(function(e){
+    					e.preventDefault();
+    					var msg = $('#msg').val();
+						if(msg != '') {
+							socket.emit('sendmsg', {uname: username, message: msg});  
+							$('#msg').val('');				
+						}
+  					});	
+  			      		
+      			socket.on('newmsg', function (data) {
+      				if(data.uname === username){
+      					$('#texte').append('<div class="perso"><strong>' + timestamp() + ' ' + data.uname + ':</strong> ' + data.message + '</div>');
+      					$('#texte').scrollTop($('#texte')[0].scrollHeight);
+      				} else {
+      					$('#texte').append('<div><strong>' + timestamp() + ' ' + data.uname + ':</strong> ' + data.message + '</div>');
+      					$('#texte').scrollTop($('#texte')[0].scrollHeight);
+      				}						      				
+      			});
+				
+					socket.on('sysmsg', function (data) {
+						$('#texte').append('<div class="sys">' + timestamp() + data.message + '</div>');
+      				$('#texte').scrollTop($('#texte')[0].scrollHeight);
+      			});
+      		
+					socket.on('disconnect', function () {
+						$('#texte').append('<div class="sys">' + timestamp() + 'You\'ve been disconnected from the server.' + '</div>');
+      				$('#texte').scrollTop($('#texte')[0].scrollHeight);
+					});      			
+      			
+      			var timestamp = function () {
+      				var date = new Date();
+						var timestamp = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ';    
+      				return timestamp;
+      			};
+				});
+			});
+      </script>		
+			
+	</body>
+</html>
