@@ -1,6 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Project made by Allan DEMARBRE using NodeJS.
 
 ### What is this repository for? ###
 
