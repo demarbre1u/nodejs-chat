@@ -1,4 +1,4 @@
-# README #
+# Simple NodeJS Chat #
 
 Project made by Allan DEMARBRE using NodeJS and socket.io.
 
