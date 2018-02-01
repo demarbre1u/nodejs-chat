@@ -1,6 +1,6 @@
 # README #
 
-Project made by Allan DEMARBRE using NodeJS.
+Project made by Allan DEMARBRE using NodeJS and socket.io.
 
 ### What is this repository for? ###
 
