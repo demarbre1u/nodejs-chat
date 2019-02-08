@@ -5,22 +5,14 @@ const PORT = 8080;
 
 // Chargement du fichier index.html affiché au client
 let server = http.createServer((req, res) => {
-
-	console.log(req.url)
-
+	// Si on demande '/', on envoie index.html
 	req.url = req.url === '/' ? 'index.html' : req.url;
 
+	// On lit puis on envoie le fichier
 	fs.readFile(`./${req.url}`, 'utf-8', (error, content) => {
 		res.writeHead(200);
 		res.end(content);
 	});
-
-	/*
-    fs.readFile('./index.html', 'utf-8', (error, content) => {
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(content);
-	});
-	*/
 });
 
 // Chargement de socket.io
@@ -30,8 +22,8 @@ let htmlEscape = require('secure-filters').html;
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', (socket) => {
 	
+	// Evenement lorsqu'un utilisateur se connecte
 	socket.on('connected', (data) => {
-
 		console.log(`${data.uname} has joined the chat`);
 
 		data.uname = htmlEscape(data.uname);		
@@ -39,14 +31,16 @@ io.sockets.on('connection', (socket) => {
 		socket.broadcast.emit('sysmsg', data);
 		socket.emit('sysmsg', data);
 	});
-    
+	
+	// Evenement lorqu'un utilisateur envoie un message
   	socket.on('sendmsg', (data) => {
   		data.message = htmlEscape(data.message);    	
     	
 		socket.broadcast.emit('newmsg', data);    
 		socket.emit('newmsg', data);    
    	});
-    
+	
+	// Evenement lorsque quelqu'un se déconnecte
    	socket.on('disconnect', (data) => {		
 		console.log(`Someone has left the chat`);
 		
