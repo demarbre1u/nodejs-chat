@@ -1,0 +1,29 @@
+body {
+    background-color: #222;			
+}	
+        
+div {
+    color: white;			
+}			
+
+#texte {
+    width: 518px;
+    height: 500px;
+    border: solid white 1px;
+    overflow-y: scroll;
+    word-wrap: break-word;
+}
+
+#msg {
+    max-width: 500px;
+    min-width: 500px;
+}
+
+.perso {
+    color: blue;
+}
+
+.sys {
+    color:red;
+    font-weight: bold;
+}
