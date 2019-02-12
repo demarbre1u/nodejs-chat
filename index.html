@@ -4,29 +4,49 @@
 		<title>Chat</title>
 		<meta charset="utf-8"/>	
 		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
 	</head>	
 
 	<body>
+		<!-- Navbar -->
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<span id="brand-name" class="navbar-item">NodeJS Chat</span>
+			</div>
+		</nav>
 		
-		<div id="login">
-			<form id="login_form">			
-				Login : <input type="text" id="username"/>					
-			</form>
-		</div>	
-	
-		<div id="chat">
-			<div id="texte"></div>
-			<form id="form">
-				<input id="msg" type="text" autocomplete="off"/>	
-			</form>
-		</div>		
-	
+		<!-- Content -->
+		<div id="wrapper">
+
+			<div id="login" class="card">
+				<div class="card-content">
+					<form id="login_form">			
+						<div class="field">
+							<label class="label">Username</label>
+							<div class="control">
+								<input id="username" class="input" type="text">
+							</div>
+						</div>				
+					</form>
+				</div>
+			</div>
+		
+			<div id="chat">
+				<div id="texte"></div>
+
+				<form id="form">
+					<div class="control">
+						<input id="msg" class="input" type="text" placeholder="Type your message here..." autocomplete="off">
+					</div>
+				</form>
+			</div>	
+		</div>
+		
+		<!-- Script -->
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
       	<script>
 			$(() => {
-				$('#chat').hide();
-
 				$('#login_form').submit(e => {
 					e.preventDefault();
 
@@ -35,8 +55,8 @@
 					// Si l'username saisie n'est pas valide, on ne fait rien
 					if(username === '') return;					
 					
-					$('#login').fadeOut();
-					$('#chat').fadeIn();					
+					$('#login').hide();
+					$('#chat').show();					
 					
 					let socket = io.connect('http://127.0.0.1:8080');    	
 					socket.emit('connected', {uname: username});				
@@ -57,33 +77,34 @@
 					// Evenement lorsqu'on envoie un nouveau message
 					socket.on('newmsg', data => {
 						if(data.uname === username)
-						{
-							$('#texte').append('<div class="perso"><strong>' + timestamp() + ' ' + data.uname + ':</strong> ' + data.message + '</div>');
-							$('#texte').scrollTop($('#texte')[0].scrollHeight);
-						} 
+							$('#texte').append(`<div class="perso">${timestamp()} <strong> ${data.uname} :</strong> ${data.message} </div>`);
 						else 
-						{
-							$('#texte').append('<div><strong>' + timestamp() + ' ' + data.uname + ':</strong> ' + data.message + '</div>');
-							$('#texte').scrollTop($('#texte')[0].scrollHeight);
-						}						      				
+							$('#texte').append(`<div>${timestamp()} <strong> ${data.uname} :</strong> ${data.message}</div>`);
+
+						$('#texte').scrollTop($('#texte')[0].scrollHeight);
 					});
 				
 					// Evenement lorsqu'on reçoit un message système
 					socket.on('sysmsg', data => {
-						$('#texte').append('<div class="sys">' + timestamp() + data.message + '</div>');
+						$('#texte').append(`<div class="sys">${timestamp()} ${data.message}</div>`);
 						$('#texte').scrollTop($('#texte')[0].scrollHeight);
 					});
 			  
 					// Evenement lorsqu'on se déconnecte
 					socket.on('disconnect', () => {
-						$('#texte').append('<div class="sys">' + timestamp() + 'You\'ve been disconnected from the server.' + '</div>');
+						$('#texte').append(`<div class="sys">${timestamp()} You've been disconnected from the server.</div>`);
       					$('#texte').scrollTop($('#texte')[0].scrollHeight);
 					});      			
 				  
 					// Fonctions qui calcule un timestamp
 					let timestamp = () => {
 						let date = new Date();
-						let timestamp = '[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ';    
+
+						let hours = date.getHours().toString().length > 1 ? date.getHours() : `0${date.getHours()}`
+						let minutes = date.getMinutes().toString().length > 1 ? date.getMinutes() : `0${date.getMinutes()}`
+						let seconds = date.getSeconds().toString().length > 1 ? date.getSeconds() : `0${date.getSeconds()}`
+
+						let timestamp = `[${hours}:${minutes}:${seconds}] `;    
 						
 						return timestamp;
 					};
