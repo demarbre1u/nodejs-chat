@@ -1,22 +1,41 @@
-const http = require('http');
+const express = require('express');
+const cors = require('cors');
+let app = express();
+app.use(express.static('public'));
+app.use(cors());
+
 const fs = require('fs');
+const http = require('http');
+const server = http.createServer(app);
+
+
 
 const PORT = 8080;
 
-// Chargement du fichier index.html affiché au client
-let server = http.createServer((req, res) => {
-	// Si on demande '/', on envoie index.html
-	req.url = req.url === '/' ? 'index.html' : req.url;
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 
+// Chargement du fichier index.html affiché au client
+app.get('/', (req, res) => {
+
+	res.sendFile(__dirname + '/index.html');
+
+	/*
 	// On lit puis on envoie le fichier
-	fs.readFile(`./${req.url}`, 'utf-8', (error, content) => {
+	fs.readFile(`./index.html`, 'utf-8', (error, content) => {
 		res.writeHead(200);
 		res.end(content);
 	});
+	*/
 });
 
 // Chargement de socket.io
-let io = require('socket.io').listen(server);
+const { Server } = require("socket.io");
+const io = new Server(server);
+//let io = require('socket.io').listen(server);
 let htmlEscape = require('secure-filters').html;
 
 // Quand un client se connecte, on le note dans la console

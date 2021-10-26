@@ -58,7 +58,7 @@
 					$('#login').hide();
 					$('#chat').show();					
 					
-					let socket = io.connect('http://127.0.0.1:8080');    	
+					let socket = io();    	
 					socket.emit('connected', {uname: username});				
 				
 					// On se connecte au serveur de chat
