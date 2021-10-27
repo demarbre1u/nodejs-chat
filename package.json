@@ -1,0 +1,28 @@
+{
+  "name": "nodejs_chat",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   <img src=\"screens/screen01.png\" width=\"350\" title=\"Screen 1\" alt=\"Screen 1\">\r   <img src=\"screens/screen02.png\" width=\"350\" title=\"Screen 2\" alt=\"Screen 2\">\r </p>",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "secure-filters": "^1.1.0",
+    "socket.io": "^4.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demarbre1u/NodeJS_Chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/demarbre1u/NodeJS_Chat/issues"
+  },
+  "homepage": "https://github.com/demarbre1u/NodeJS_Chat#readme"
+}
