@@ -37,11 +37,18 @@ $(() => {
         // Evenement lorsqu'on envoie un nouveau message
         socket.on('newmsg', data => {
             const hideHeader = lastMsgUuid === data.uuid;
-            if(data.uuid === uuid) {
-                $('#texte').append(`<div class="msg-bubble perso"><div class="msg-header ${hideHeader ? 'hidden' : ''}">${timestamp()} from <strong>you</strong></div> <div class="msg-text">${data.message}</div></div>`);
-            } else {
-                $('#texte').append(`<div class="msg-bubble"><div class="msg-header ${hideHeader ? 'hidden' : ''}">${timestamp()} from <strong> ${data.uname}</strong></div> <div class="msg-text">${data.message}</div></div>`);
-            } 
+            const isUserMsg = data.uuid === uuid;
+            const username = isUserMsg ? 'you' : data.uname;
+
+            $('#texte').append(`
+                <div class="msg-bubble ${isUserMsg ? 'perso' : ''}">
+                    <div class="msg-header ${hideHeader ? 'hidden' : ''}">
+                        ${timestamp()} from <strong>${username}</strong>
+                    </div> 
+
+                    <div class="msg-text" style="background-color: ${data.msgColor}">${data.message}</div>
+                </div>
+            `);
 
             lastMsgUuid = data.uuid;
 

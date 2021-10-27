@@ -19,6 +19,14 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 let htmlEscape = require('secure-filters').html;
 
+const colorsArray = ['#00d1b2', '#485fc7', '#3e8ed0', '#48c78e', '#f14668'];
+const pickRandomColor = () => {
+	const randomIndex = Math.round(Math.random() * (colorsArray.length - 1));
+	const color = colorsArray[randomIndex];
+
+	return color;
+};
+
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', (socket) => {
 	
@@ -33,6 +41,7 @@ io.sockets.on('connection', (socket) => {
 		const uuid = uuidv4();
 		socket.uuid = uuid;
 		socket.uname = data.uname;
+		socket.msgColor = pickRandomColor();
 
 		socket.emit('chatJoined', {uuid});
 
@@ -44,6 +53,7 @@ io.sockets.on('connection', (socket) => {
   	socket.on('sendmsg', (data) => {
   		data.message = htmlEscape(data.message);    	
   		data.uuid = socket.uuid;    	
+  		data.msgColor = socket.msgColor;    	
     	
 		socket.broadcast.emit('newmsg', data);    
 		socket.emit('newmsg', data);    

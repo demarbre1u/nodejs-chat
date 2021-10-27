@@ -102,7 +102,7 @@ div {
 }
 
 .msg-text {
-    background-color: #3388CE;
+    /*background-color: #3388CE;*/
     color: white;
     width: fit-content;
     padding: 5px 15px;
@@ -111,7 +111,7 @@ div {
 }
 
 .msg-bubble.perso .msg-text {
-    background-color: #00C4A7;
+    /*background-color: #00C4A7;*/
     border-radius: 0px 20px 20px 20px;
 }
 
