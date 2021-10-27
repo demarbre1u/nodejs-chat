@@ -4,38 +4,22 @@ let app = express();
 app.use(express.static('public'));
 app.use(cors());
 
-const fs = require('fs');
 const http = require('http');
 const server = http.createServer(app);
 
+const dotenv = require('dotenv');
+dotenv.config();
 
-
-const PORT = 8080;
-
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	next();
-});
+const PORT = process.env.NODE_CHAT_PORT || 8080;
 
 // Chargement du fichier index.html affiché au client
 app.get('/', (req, res) => {
-
 	res.sendFile(__dirname + '/index.html');
-
-	/*
-	// On lit puis on envoie le fichier
-	fs.readFile(`./index.html`, 'utf-8', (error, content) => {
-		res.writeHead(200);
-		res.end(content);
-	});
-	*/
 });
 
 // Chargement de socket.io
 const { Server } = require("socket.io");
 const io = new Server(server);
-//let io = require('socket.io').listen(server);
 let htmlEscape = require('secure-filters').html;
 
 // Quand un client se connecte, on le note dans la console
