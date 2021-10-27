@@ -24,8 +24,10 @@
 						<div class="field">
 							<label class="label">Username</label>
 							<div class="control">
-								<input id="username" class="input" type="text">
+								<input required="true" id="username" class="input" type="text">
 							</div>
+							
+							<button type="submit" class="join-btn button is-primary">Join</button>
 						</div>				
 					</form>
 				</div>
@@ -53,8 +55,10 @@
 					let username = $('#username').val();
 					
 					// Si l'username saisie n'est pas valide, on ne fait rien
-					if(username === '') return;					
-					
+					if(username === '') {
+						return;					
+					}
+
 					$('#login').hide();
 					$('#chat').show();					
 					
@@ -67,8 +71,7 @@
 						
 						let msg = $('#msg').val();
 						
-						if(msg != '') 
-						{
+						if(msg != '') {
 							socket.emit('sendmsg', {uname: username, message: msg});  
 							$('#msg').val('');				
 						}
@@ -76,10 +79,11 @@
 							
 					// Evenement lorsqu'on envoie un nouveau message
 					socket.on('newmsg', data => {
-						if(data.uname === username)
+						if(data.uname === username) {
 							$('#texte').append(`<div class="perso">${timestamp()} <strong> ${data.uname} :</strong> ${data.message} </div>`);
-						else 
+						} else {
 							$('#texte').append(`<div>${timestamp()} <strong> ${data.uname} :</strong> ${data.message}</div>`);
+						} 
 
 						$('#texte').scrollTop($('#texte')[0].scrollHeight);
 					});
