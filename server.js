@@ -10,6 +10,8 @@ const server = http.createServer(app);
 const dotenv = require('dotenv');
 dotenv.config();
 
+const { v4: uuidv4 } = require('uuid');
+
 const PORT = process.env.NODE_CHAT_PORT || 8080;
 
 // Chargement du fichier index.html affiché au client
@@ -31,6 +33,14 @@ io.sockets.on('connection', (socket) => {
 
 		data.uname = htmlEscape(data.uname);		
 		data.message = data.uname + ' connected to the chat!';
+
+		// On donne un uuid à l'utilisateur
+		const uuid = uuidv4();
+		socket.uuid = uuid;
+		socket.uname = data.uname;
+
+		socket.emit('chatJoined', {uuid});
+
 		socket.broadcast.emit('sysmsg', data);
 		socket.emit('sysmsg', data);
 	});
@@ -38,6 +48,7 @@ io.sockets.on('connection', (socket) => {
 	// Evenement lorqu'un utilisateur envoie un message
   	socket.on('sendmsg', (data) => {
   		data.message = htmlEscape(data.message);    	
+  		data.uuid = socket.uuid;    	
     	
 		socket.broadcast.emit('newmsg', data);    
 		socket.emit('newmsg', data);    
@@ -45,9 +56,9 @@ io.sockets.on('connection', (socket) => {
 	
 	// Evenement lorsque quelqu'un se déconnecte
    	socket.on('disconnect', (data) => {		
-		console.log(`Someone has left the chat`);
+		console.log(`${socket.uname} has left the chat`);
 		
-		socket.broadcast.emit('sysmsg', {message: 'Somebody left the chat.'});
+		socket.broadcast.emit('sysmsg', {message: `${socket.uname} left the chat.`});
    	});
 });
 

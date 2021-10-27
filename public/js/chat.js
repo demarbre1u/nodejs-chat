@@ -3,7 +3,8 @@ $(() => {
         e.preventDefault();
 
         let username = $('#username').val();
-        
+        let uuid = '';
+
         // Si l'username saisie n'est pas valide, on ne fait rien
         if(username === '') {
             return;					
@@ -25,14 +26,19 @@ $(() => {
                 socket.emit('sendmsg', {uname: username, message: msg});  
                 $('#msg').val('');				
             }
-          });	
+        });	
+
+        // On récupère notre uuid lorsqu'on est connecté au chat
+        socket.on('chatJoined', data => {
+            uuid = data.uuid;
+        })
                 
         // Evenement lorsqu'on envoie un nouveau message
         socket.on('newmsg', data => {
-            if(data.uname === username) {
-                $('#texte').append(`<div class="perso">${timestamp()} <strong> ${data.uname} :</strong> ${data.message} </div>`);
+            if(data.uuid === uuid) {
+                $('#texte').append(`<div class="msg-bubble perso"><div class="msg-header">${timestamp()} from <strong>you</strong></div> <div class="msg-text">${data.message}</div></div>`);
             } else {
-                $('#texte').append(`<div>${timestamp()} <strong> ${data.uname} :</strong> ${data.message}</div>`);
+                $('#texte').append(`<div class="msg-bubble"><div class="msg-header">${timestamp()} from <strong> ${data.uname}</strong></div> <div class="msg-text">${data.message}</div></div>`);
             } 
 
             $('#texte').scrollTop($('#texte')[0].scrollHeight);
@@ -56,9 +62,8 @@ $(() => {
 
             let hours = date.getHours().toString().length > 1 ? date.getHours() : `0${date.getHours()}`
             let minutes = date.getMinutes().toString().length > 1 ? date.getMinutes() : `0${date.getMinutes()}`
-            let seconds = date.getSeconds().toString().length > 1 ? date.getSeconds() : `0${date.getSeconds()}`
 
-            let timestamp = `[${hours}:${minutes}:${seconds}] `;    
+            let timestamp = `At ${hours}:${minutes}, `;    
             
             return timestamp;
         };

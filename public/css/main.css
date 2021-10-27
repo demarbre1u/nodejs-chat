@@ -41,7 +41,7 @@ div {
 }
 
 #texte {
-    background-color: white;
+    background-color: whitesmoke;
     overflow-y: auto;
     word-wrap: break-word;
     height: calc(100vh - 3.25rem - 36px);
@@ -52,16 +52,43 @@ div {
     width: 100vw;
 }
 
-.perso {
-    color: #2980b9 !important;
-}
-
 .sys {
-    color:#e74c3c !important;
-    font-weight: bold !important;
+    text-align: center;
+    color: grey !important;
+    font-style: italic;
+    margin: 5px 0px;
 }
 
 .join-btn {
     width: 100%;
     margin-top: 5px;
+}
+
+.msg-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 10px 0px;
+}
+
+.msg-bubble.perso {
+    align-items: flex-start;
+}
+
+.msg-header {
+    color: grey;
+    font-style: italic;
+}
+
+.msg-text {
+    background-color: #3388CE;
+    color: white;
+    width: fit-content;
+    padding: 5px 15px;
+    border-radius: 20px 0px 20px 20px;
+}
+
+.msg-bubble.perso .msg-text {
+    background-color: #00C4A7;
+    border-radius: 0px 20px 20px 20px;
 }
