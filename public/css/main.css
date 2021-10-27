@@ -69,10 +69,31 @@ div {
     flex-direction: column;
     align-items: flex-end;
     margin: 10px 0px;
+
+    animation: forwards 200ms normal msg-bubble-slidein;
+}
+
+@keyframes self-msg-bubble-slidein {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes msg-bubble-slidein {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
 }
 
 .msg-bubble.perso {
     align-items: flex-start;
+    animation: forwards 200ms normal self-msg-bubble-slidein;
 }
 
 .msg-header {
