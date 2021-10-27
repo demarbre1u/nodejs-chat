@@ -7,11 +7,9 @@
   <img src="screens/screen02.png" width="350" title="Screen 2" alt="Screen 2">
 </p>
 
-Project made using NodeJS and socket.io.
+This project is a simple NodeJS chat.
 
-## What is this repository for? ###
-
-This project includes a simple NodeJS chat.
+It was made using NodeJS and socket.io.
 
 ## How do I get set up? ###
 
@@ -24,7 +22,15 @@ npm install
 Then launch the app using the node command :
 
 ```bash
-node server.js
+npm start
+```
+
+You can run the app in dev mode using Nodemon with the command :  
+
+```bash
+npm run dev
 ```
 
 You can then access the chat via the following URL : http://localhost:8080
+
+The port used can be modified by creating a `.env` file from `.env.sample`, and changing the value of the variable `NODE_CHAT_PORT`.
