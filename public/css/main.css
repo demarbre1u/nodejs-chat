@@ -68,7 +68,6 @@ div {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin: 10px 0px;
 
     animation: forwards 200ms normal msg-bubble-slidein;
 }
@@ -99,6 +98,7 @@ div {
 .msg-header {
     color: grey;
     font-style: italic;
+    margin: 10px 0px 0px 0px;
 }
 
 .msg-text {
@@ -106,10 +106,15 @@ div {
     color: white;
     width: fit-content;
     padding: 5px 15px;
+    margin-top: 2px;
     border-radius: 20px 0px 20px 20px;
 }
 
 .msg-bubble.perso .msg-text {
     background-color: #00C4A7;
     border-radius: 0px 20px 20px 20px;
+}
+
+.hidden {
+    display: none;
 }

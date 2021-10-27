@@ -14,11 +14,6 @@ const { v4: uuidv4 } = require('uuid');
 
 const PORT = process.env.NODE_CHAT_PORT || 8080;
 
-// Chargement du fichier index.html affiché au client
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/index.html');
-});
-
 // Chargement de socket.io
 const { Server } = require("socket.io");
 const io = new Server(server);
