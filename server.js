@@ -12,7 +12,7 @@ dotenv.config();
 
 const { v4: uuidv4 } = require('uuid');
 
-const PORT = process.env.NODE_CHAT_PORT || 8080;
+const PORT = process.env.PORT || process.env.NODE_CHAT_PORT || 8080;
 
 // Chargement de socket.io
 const { Server } = require("socket.io");
