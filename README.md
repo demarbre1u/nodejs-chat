@@ -11,6 +11,8 @@ This project is a simple NodeJS chat.
 
 It was made using NodeJS and socket.io.
 
+The app is available here : https://demarbre-nodejs-chat.herokuapp.com/
+
 ## How do I get set up? ###
 
 You will first need to install the required dependencies :
